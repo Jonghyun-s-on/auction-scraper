@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from config.settings import CHROME_DRIVER_PATH
+from scraper.config import CHROME_DRIVER_PATH
 
 _driver = None
 
