@@ -3,21 +3,25 @@ from scraper.selector import *
 from selenium.webdriver.support.ui import Select
 import time
 
-def fetch_page(driver):
+def fetch_page(driver, form):
+    court = form.fields["court"]
+    bid_type = form.fields["bid_type"]
+    submit = form.fields["submit"]
+
     # 검색 페이지 접속
     driver.get(BASE_URL + SEARCH_URI)
     time.sleep(2)
 
     # 법원 선택
-    select_option(driver, SEARCH_COURT_INPUT_SELECTOR, SEARCH_COURT_INPUT_VALUES[2])
+    select_option(driver, court["selector"], court["value"])
     time.sleep(2)
 
     # 입찰 구분 선택
-    click_element(driver, SEARCH_BID_TYPE_SELECTOR)
+    click_element(driver, bid_type["selector"])
     time.sleep(2)
 
     # 검색 버튼 클릭
-    click_element(driver, SEARCH_BUTTON_SELECTOR)
+    click_element(driver, submit["selector"])
     time.sleep(5)
 
     return driver.page_source
