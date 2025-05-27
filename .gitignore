@@ -1,0 +1,13 @@
+# 가상환경
+.venv/
+
+.idea/
+
+# 파이썬 캐시 파일
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 로그 파일
+*.log
