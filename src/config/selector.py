@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-SELECTOR = {
+FORM_SELECTOR = {
     "submit_button": {
         "type": "button",
         "by": By.ID,
@@ -43,6 +43,24 @@ SELECTOR = {
     "usage_lv3_input": {
         "type": "select",
         "by": By.ID,
-        "value": "mf_wfm_mainFrame_sbx_rletMclLst",
+        "value": "mf_wfm_mainFrame_sbx_rletSclLst",
+    },
+}
+
+RESULT_SELECTOR = {
+    "page_size_input": {
+        "type": "select",
+        "by": By.ID,
+        "value": "mf_wfm_mainFrame_sbx_pageSize"
+    },
+    "content_box": {
+        "type": "container",
+        "by": By.ID,
+        "value": "mf_wfm_mainFrame_grp_contests",
+    },
+    "next_page_button": {
+        "type": "button",
+        "by": By.ID,
+        "value": "mf_wfm_mainFrame_pgl_gdsDtlSrchPage_next_btn",
     },
 }
