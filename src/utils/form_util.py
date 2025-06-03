@@ -1,6 +1,11 @@
 from datetime import datetime, timedelta
 from itertools import product
+from src.utils.logger import logger
 import copy
+
+
+def generate_valid_forms(condition: dict):
+    return [form for form in generate_form_list(condition) if is_valid_form(form)]
 
 
 def generate_form_list(condition: dict):
@@ -12,38 +17,34 @@ def generate_form_list(condition: dict):
         for path, value in zip(list_paths, combo):
             set_by_path(form, path, value)
         form_list.append(form)
-
     return form_list
 
 
-def is_valid_form(form):
+def is_valid_form(form: dict):
+    return is_valid_date_range(form)
+
+
+def is_valid_date_range(form: dict):
     try:
         fmt = "%Y-%m-%d"
-        start_date = datetime.strptime(form["start_date_input"], fmt)
-        end_date = datetime.strptime(form["end_date_input"], fmt)
+        start = datetime.strptime(form["start_date_input"], fmt)
+        end = datetime.strptime(form["end_date_input"], fmt)
 
-        if is_valid_date(start_date, end_date):
-            return True
+        today = datetime.today()
+
+        if start.date() < today.date():
+            logger.warning(f"START_DATE is earlier than today. (input value: {start.date()}, today: {today.date()})")
+            raise ValueError("invalid START_DATE")
+
+        if end > start + timedelta(days=14):
+            logger.warning(f"END_DATE exceeds 14 days after START_DATE. (input value: {start.date()} ~ {end.date()})")
+            raise ValueError("invalid END_DATE")
+
+        return True
+
+    except KeyError as e:
+        logger.warning(f"missing date field in form: {e}")
         return False
-
-    except (KeyError, ValueError):
-        return False
-
-
-def is_valid_date(start, end):
-    today = datetime.today()
-
-    # start 는 오늘 이상
-    if start.date() < today.date():
-        print("[ERROR] Form Date 1")
-        return False
-
-    # end_date 는 start_date + 14일 이내
-    if end > start + timedelta(days=14):
-        print("[ERROR] Form Date 2")
-        return False
-
-    return True
 
 
 def extract_list_paths(d, prefix=()):
